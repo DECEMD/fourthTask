@@ -63,6 +63,7 @@ class ClockTime @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        postInvalidateDelayed(1)
         paintCircle.style = Paint.Style.FILL
         paintCircle.color = clockColor
         canvas.drawCircle(
@@ -112,14 +113,23 @@ class ClockTime @JvmOverloads constructor(
 
         }
 
-        val clock = Vremya.now()
+            val calendar: Calendar = Calendar.getInstance()
+            var hours = calendar.get(Calendar.HOUR).toFloat()
+            var minutes = calendar.get(Calendar.MINUTE).toFloat()
+            var seconds = calendar.get(Calendar.SECOND).toFloat()
+            val milliseconds = calendar.get(Calendar.MILLISECOND).toFloat()
+            seconds += milliseconds * 0.001f
+            minutes += seconds / 60.0f
+            hours += minutes / 60.0f
+
+        /*val clock = Vremya.now()
         val hours = clock.getHour()
         val minutes = clock.getMinute()
-        val seconds = clock.getSecond()
+        val seconds = clock.getSecond()*/
 
         paintPointer.strokeWidth = hourThickness
         paintPointer.color = hourColor
-        val hourRotation = (360 / 12).toFloat() * (30 + hours)
+        val hourRotation = (360 / 60).toFloat() * (40 + hours)
         canvas.rotate(
             hourRotation,
             (width / 2).toFloat(),
