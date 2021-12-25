@@ -9,15 +9,8 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RequiresApi
-import java.sql.Time
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.math.min
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
-import java.time.LocalTime as Vremya
+
 
 class ClockTime @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
@@ -60,7 +53,7 @@ class ClockTime @JvmOverloads constructor(
         radius = (min(width, height) / 2.0 * 0.8).toFloat()
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         postInvalidateDelayed(1)
@@ -81,6 +74,7 @@ class ClockTime @JvmOverloads constructor(
             radius,
             paintCircle
         )
+
         for (i in 1..12) {
             canvas.drawLine(
                 (width / 2).toFloat(),
@@ -94,7 +88,6 @@ class ClockTime @JvmOverloads constructor(
                 (width / 2).toFloat(),
                 (height / 2).toFloat()
             )
-
         }
 
         for (i in 1..60) {
@@ -110,7 +103,6 @@ class ClockTime @JvmOverloads constructor(
                 (width / 2).toFloat(),
                 (height / 2).toFloat()
             )
-
         }
 
             val calendar: Calendar = Calendar.getInstance()
@@ -121,11 +113,6 @@ class ClockTime @JvmOverloads constructor(
             seconds += milliseconds * 0.001f
             minutes += seconds / 60.0f
             hours += minutes / 60.0f
-
-        /*val clock = Vremya.now()
-        val hours = clock.getHour()
-        val minutes = clock.getMinute()
-        val seconds = clock.getSecond()*/
 
         paintPointer.strokeWidth = hourThickness
         paintPointer.color = hourColor
@@ -170,8 +157,6 @@ class ClockTime @JvmOverloads constructor(
             (height / 2).toFloat() + 300f,
             paintPointer
         )
-
-        invalidate()
+        requestLayout()
     }
-
 }
